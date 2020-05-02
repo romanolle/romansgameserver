@@ -1,6 +1,7 @@
 package olle.roman.game.romansgameserver.domain.model.objects.obstacle;
 
 import olle.roman.game.romansgameclient.model.objects.CommonObject;
+import olle.roman.game.romansgameserver.domain.model.exception.InvalidPositionException;
 import olle.roman.game.romansgameserver.domain.model.objects.Equipment;
 import olle.roman.game.romansgameserver.domain.model.objects.ObjectActions;
 import olle.roman.game.romansgameserver.domain.model.objects.ObjectBase;
@@ -32,6 +33,11 @@ public class Tree extends ObjectBase implements Obstacle {
 		if(usedEquipment instanceof Axe) {
 			actions.changeObjectInMap(getIndex(), DefaultObjectFactory.getInstance().createObject(ObjectDefinitionVariables.WOOD_DEFINITION, actions, getIndex()));
 		}
+	}
+
+	@Override
+	public void staysOn() throws InvalidPositionException {
+		throw new InvalidPositionException();
 	}
 
 	@Override

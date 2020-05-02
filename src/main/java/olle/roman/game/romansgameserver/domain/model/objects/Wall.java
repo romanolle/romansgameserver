@@ -1,5 +1,7 @@
 package olle.roman.game.romansgameserver.domain.model.objects;
 
+import olle.roman.game.romansgameserver.domain.model.exception.InvalidPositionException;
+
 public class Wall implements CommonObject {
 
 	private static final Wall INSTANCE = new Wall();
@@ -35,6 +37,12 @@ public class Wall implements CommonObject {
 	@Override
 	public void onTake() {		
 	}
+
+	@Override
+	public void staysOn() throws InvalidPositionException {
+		throw new InvalidPositionException();
+	}
+	
 	@Override
 	public CommonObject clone() throws CloneNotSupportedException {
 		return (CommonObject) super.clone();

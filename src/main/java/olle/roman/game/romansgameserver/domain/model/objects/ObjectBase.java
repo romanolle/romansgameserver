@@ -1,5 +1,7 @@
 package olle.roman.game.romansgameserver.domain.model.objects;
 
+import olle.roman.game.romansgameserver.domain.model.exception.InvalidPositionException;
+
 public abstract class ObjectBase implements CommonObject {
 
 	protected final ObjectActions actions;
@@ -42,6 +44,10 @@ public abstract class ObjectBase implements CommonObject {
 	public void onStep() {
 		actions.move();
 	}
+	
+	@Override
+	public void staysOn() throws InvalidPositionException {	
+	}
 
 	@Override
 	public int hashCode() {
@@ -67,7 +73,6 @@ public abstract class ObjectBase implements CommonObject {
 			return false;
 		return true;
 	}
-	
-	
-	
+
+
 }

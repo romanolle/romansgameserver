@@ -2,7 +2,10 @@ package olle.roman.game.romansgameserver.domain.model.map;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import olle.roman.game.romansgameserver.domain.model.Direction;
+import olle.roman.game.romansgameserver.domain.model.objects.Equipment;
 import olle.roman.game.romansgameserver.domain.model.objects.definition.ObjectDefinition;
 
 public class Map {
@@ -14,6 +17,7 @@ public class Map {
 	private final Direction direction;
 	private final int maxHealth;
 	private final int maxStepLimit;
+	private final List<Equipment> defaultEquipments;
 
 	
 	
@@ -34,11 +38,16 @@ public class Map {
 	}
 
 	public Map(List<ObjectDefinition> map, int defaultPosition, Direction direction, int maxHealth, int maxStepLimit) {
+		this(map, defaultPosition, direction, maxHealth, maxStepLimit, Lists.newArrayList());
+	}
+
+	public Map(List<ObjectDefinition> map, int defaultPosition, Direction direction, int maxHealth, int maxStepLimit, List<Equipment> defaultEquipments) {
 		this.map = map;
 		this.defaultPosition = defaultPosition;
 		this.direction = direction;
 		this.maxHealth = maxHealth;
 		this.maxStepLimit = maxStepLimit;
+		this.defaultEquipments = defaultEquipments;
 	}
 
 	public List<ObjectDefinition> getMap() {
@@ -61,4 +70,7 @@ public class Map {
 		return maxHealth;
 	}
 	
+	public List<Equipment> getDefaultEquipments() {
+		return defaultEquipments;
+	}
 }

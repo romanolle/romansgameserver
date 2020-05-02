@@ -14,6 +14,8 @@ import olle.roman.game.romansgameserver.domain.model.objects.equipment.Matches;
 import olle.roman.game.romansgameserver.domain.model.objects.equipment.Wood;
 import olle.roman.game.romansgameserver.domain.model.objects.obstacle.Ditch;
 import olle.roman.game.romansgameserver.domain.model.objects.obstacle.Tree;
+import olle.roman.game.romansgameserver.domain.model.objects.weapon.Bow;
+import olle.roman.game.romansgameserver.domain.model.objects.weapon.Sword;
 
 public class DefaultObjectFactory implements ObjectFactory {
 
@@ -51,6 +53,10 @@ public class DefaultObjectFactory implements ObjectFactory {
 				return new Catapult(actions, index);
 			case ARCHER:
 				return new Archer(actions, index);
+			case BOW:
+				return new Bow(actions, index);
+			case SWORD:
+				return new Sword(actions, index);
 		}
 		throw new RuntimeException("Invalid object type");
 	}

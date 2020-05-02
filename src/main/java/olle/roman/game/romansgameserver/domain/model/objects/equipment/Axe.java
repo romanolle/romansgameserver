@@ -15,6 +15,8 @@ public class Axe extends ObjectBase implements Equipment {
 				new Wood(null, -1)
 	);
 	
+	protected final int axeCode = 0;	
+	
 	public Axe(ObjectActions actions, int index) {
 		super(actions, index);
 	}	
@@ -48,5 +50,4 @@ public class Axe extends ObjectBase implements Equipment {
 	public Collection<Equipment> madeFrom() {
 		return INITIAL_MATERIALS;
 	}
-	
 }

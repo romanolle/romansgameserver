@@ -20,7 +20,8 @@ public class DefaultGameService implements GameService {
 	@Override
 	public UUID createNewGame(String name) {
 		UUID id = UUID.randomUUID();
-		games.put(id, new DefaultGame(name, id));
+		olle.roman.game.romansgameserver.domain.model.map.Map map = olle.roman.game.romansgameserver.domain.model.map.Maps.map17DoubleCatapult();
+		games.put(id, new DefaultGame(name, id, map));
 		return id;
 	}
 

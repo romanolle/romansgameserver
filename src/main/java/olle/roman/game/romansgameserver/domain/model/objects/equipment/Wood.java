@@ -37,11 +37,6 @@ public class Wood extends ObjectBase implements Equipment {
 	public String toString() {
 		return asString();
 	}
-	
-	@Override
-	public void onJump() {
-		onJump();
-	}
 
 	@Override
 	public Collection<Equipment> madeFrom() throws NotPossibleToMakeException {

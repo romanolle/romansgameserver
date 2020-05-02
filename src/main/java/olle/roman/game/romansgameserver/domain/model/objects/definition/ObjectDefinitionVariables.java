@@ -10,6 +10,10 @@ public abstract class ObjectDefinitionVariables {
 
 	public static final ObjectDefinition MATCHES_DEFINITION = new ObjectDefinition(ObjectType.MATCHES);
 
+	public static final ObjectDefinition BOW_DEFINITION = new ObjectDefinition(ObjectType.BOW);
+
+	public static final ObjectDefinition SWORD_DEFINITION = new ObjectDefinition(ObjectType.SWORD);
+
 	public static final ObjectDefinition PORTAL_DEFINITION = new ObjectDefinition(ObjectType.PORTAL);
 
 	public static final ObjectDefinition NOTHING_DEFINITION = new ObjectDefinition(ObjectType.NOTHING);

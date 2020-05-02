@@ -23,6 +23,15 @@ public class Portal extends ObjectBase {
 	@Override
 	public void onStep() {
 		actions.move();
+		success();
+	}
+
+	@Override
+	public void staysOn() {
+		success();
+	}
+
+	private void success() {
 		actions.gameFinished();
 		actions.setResult(Result.SUCCESS);
 	}

@@ -27,6 +27,7 @@ import olle.roman.game.romansgameserver.domain.model.Game;
 import olle.roman.game.romansgameserver.domain.model.History;
 import olle.roman.game.romansgameserver.domain.model.HistoryState;
 import olle.roman.game.romansgameserver.domain.model.Result;
+import olle.roman.game.romansgameserver.domain.model.exception.InvalidPositionException;
 import olle.roman.game.romansgameserver.domain.model.exception.NotPossibleToMakeException;
 import olle.roman.game.romansgameserver.domain.model.map.Map;
 import olle.roman.game.romansgameserver.domain.model.map.Maps;
@@ -64,25 +65,31 @@ public class DefaultGame implements Game, Serializable, ObjectActions {
 	private int maxHealth;
 	private Direction direction = Direction.FORWARD;
 
-	private List<Equipment> equipments = Lists.newArrayList();
+	private List<Equipment> equipments;
 
 	private Result result = null;
 
 	private Collection<Notification> notifications = Lists.newArrayList();
 
 
-	public DefaultGame(String name, UUID id) {
+	public DefaultGame(String name, UUID id, Map map) {
 		this.name = name;
 		this.id = id;
 		LOGGER.debug("New game {} with id {} launched", this.name, id);
 
-		Map map = Maps.map17DoubleCatapult();
-		this.map = Maps.createMap(map.getMap(), this);
 		this.currentPosition = map.getDefaultPosition();
+		this.map = Maps.createMap(map.getMap(), this);
 		this.maxStepsLimit = map.getMaxStepLimit();
 		this.direction = map.getDirection();
 		this.health = map.getMaxHealth();
 		this.maxHealth = map.getMaxHealth();
+		this.equipments = Lists.newArrayList(map.getDefaultEquipments());
+		
+		try {
+			this.map.get(currentPosition).staysOn();
+		} catch (InvalidPositionException e) {
+			throw new RuntimeException(e);
+		}
 		
 		storeCurrentStateToHistory(null);
 	}
@@ -139,7 +146,8 @@ public class DefaultGame implements Game, Serializable, ObjectActions {
 		stepCounter++;
 		
 		LOGGER.debug("Game {} ({}) counter: " + stepCounter, name, id);
-		
+		LOGGER.info("Game {} ({}) : " + direction.name());
+
 		CommonObject objectAhead =  look();
 		
 		switch (action.getActionType()) {
@@ -207,7 +215,11 @@ public class DefaultGame implements Game, Serializable, ObjectActions {
 		
 		if(isFinished()) {
 			createResult();
-			notifications.add(new Notification(NotificationCode.GAME_SUCCESS));
+			if(result == Result.SUCCESS) {
+				notifications.add(new Notification(NotificationCode.GAME_SUCCESS));
+			} else {
+				notifications.add(new Notification(NotificationCode.DIED));
+			}
 			return getCurrentState();
 		}
 		
@@ -266,12 +278,14 @@ public class DefaultGame implements Game, Serializable, ObjectActions {
 			if(useAction.getEquipmentToUse() == null) {
 				LOGGER.error("Equipment to make cannot be null");
 				notifications.add(new Notification(NotificationCode.EQUIPMENT_NULL));
+				return;
 			}
 			
 			Equipment equipmentToUse = findEquipment(useAction.getEquipmentToUse());
 			if(equipmentToUse == null) {
 				LOGGER.error("Could not find equipment {} in inventory", useAction.getEquipmentToUse());
 				notifications.add(Notification.createEquipmentNotFound(useAction.getEquipmentToUse()));
+				return;
 			}
 			
 			if(!containsError(notifications)) {
@@ -303,12 +317,14 @@ public class DefaultGame implements Game, Serializable, ObjectActions {
 			if(makeAction.getEquipment() == null) {
 				LOGGER.error("Final equipment to make cannot be null");
 				notifications.add(new Notification(NotificationCode.EQUIPMENT_NULL));
+				return;
 			}
 			
 			Equipment newEquipment = findEquipment(makeAction.getEquipment());
 			if(newEquipment == null) {
 				LOGGER.error("Could not find equipment {} in inventory", makeAction.getEquipment());
 				notifications.add(Notification.createEquipmentNotFound(makeAction.getEquipment()));
+				return;
 			}
 			
 			List<Equipment> originEquipmentsState = Lists.newArrayList(equipments);

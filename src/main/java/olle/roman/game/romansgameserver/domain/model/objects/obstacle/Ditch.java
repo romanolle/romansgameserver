@@ -19,7 +19,11 @@ public class Ditch extends ObjectBase implements Obstacle {
 	@Override
 	public void onStep() {
 		actions.move();
-		actions.changeHealth(Integer.MAX_VALUE);
+		died();
+	}
+
+	private void died() {
+		actions.changeHealth(Integer.MIN_VALUE);
 		actions.gameFinished();
 		actions.setResult(Result.DIED);
 	}
@@ -34,6 +38,11 @@ public class Ditch extends ObjectBase implements Obstacle {
 		if(usedEquipment instanceof Bridge) {
 			actions.changeObjectInMap(getIndex(), DefaultObjectFactory.getInstance().createObject(ObjectDefinitionVariables.BRIDGE_DEFINITION, actions, getIndex()));
 		}
+	}
+
+	@Override
+	public void staysOn() {
+		died();
 	}
 
 	@Override

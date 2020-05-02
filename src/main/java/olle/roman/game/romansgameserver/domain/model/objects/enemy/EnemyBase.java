@@ -1,5 +1,6 @@
 package olle.roman.game.romansgameserver.domain.model.objects.enemy;
 
+import olle.roman.game.romansgameserver.domain.model.exception.InvalidPositionException;
 import olle.roman.game.romansgameserver.domain.model.objects.Enemy;
 import olle.roman.game.romansgameserver.domain.model.objects.Equipment;
 import olle.roman.game.romansgameserver.domain.model.objects.ObjectActions;
@@ -32,6 +33,11 @@ public abstract class EnemyBase extends ObjectBase implements Enemy {
 
 	@Override
 	public void onTake() {		
+	}
+
+	@Override
+	public void staysOn() throws InvalidPositionException {
+		throw new InvalidPositionException();
 	}
 
 	@Override
