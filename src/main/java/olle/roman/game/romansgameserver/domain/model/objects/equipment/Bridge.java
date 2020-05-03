@@ -41,6 +41,11 @@ public class Bridge extends ObjectBase implements Equipment {
 	}
 
 	@Override
+	public boolean singletonInList() {
+		return false;
+	}
+
+	@Override
 	public Collection<Equipment> madeFrom() {
 		return INITIAL_MATERIALS;
 	}

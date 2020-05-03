@@ -1,4 +1,4 @@
-package olle.roman.game.romansgameserver.domain.game;
+package olle.roman.game.romansgameserver.domain.game.map;
 
 import static olle.roman.game.romansgameserver.domain.model.objects.definition.ObjectDefinitionVariables.*;
 
@@ -17,13 +17,13 @@ public abstract class Maps {
 	static final List<ObjectDefinition> MAP_DEFINITION_1 = Lists.newArrayList(NOTHING_DEFINITION, NOTHING_DEFINITION, NOTHING_DEFINITION, PORTAL_DEFINITION, NOTHING_DEFINITION);
 	
 	//XNNON
-	static final Map MAP_1_PRIMITIVE_1 = new Map(MAP_DEFINITION_1);
+	public static final Map MAP_1_PRIMITIVE_1 = new Map(MAP_DEFINITION_1);
 	
 	//NNXON
-	static final Map MAP_1_PRIMITIVE_2 = new Map(MAP_DEFINITION_1, 2);
+	public static final Map MAP_1_PRIMITIVE_2 = new Map(MAP_DEFINITION_1, 2);
 	
 	//NNNOX
-	static final Map MAP_1_PRIMITIVE_3 = new Map(MAP_DEFINITION_1, 4);
+	public static final Map MAP_1_PRIMITIVE_3 = new Map(MAP_DEFINITION_1, 4);
 	
 	
 	
@@ -116,15 +116,5 @@ public abstract class Maps {
 	static final Map MAP_8_TREE_3 = new Map(MAP_DEFINITION_8, 1, Direction.FORWARD, 10, 200, Lists.newArrayList(new Axe(null, -1), new Matches(null, -1)));
 
 	
-	
-	//se stromem - bez niceho, se zapalkami, se sekyrou
-	
-	//drevo, vyroba neceho
-	
-	//rytir
-	//archer
-	//catapult
-	//neco dalsiho??
-	//bino+double ditch
 	
 }

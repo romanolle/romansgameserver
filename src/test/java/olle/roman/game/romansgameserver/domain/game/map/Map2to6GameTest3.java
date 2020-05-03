@@ -1,4 +1,4 @@
-package olle.roman.game.romansgameserver.domain.game;
+package olle.roman.game.romansgameserver.domain.game.map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -23,6 +23,7 @@ import olle.roman.game.romansgameclient.model.objects.weapon.Sword;
 import olle.roman.game.romansgameclient.model.state.NotificationCode;
 import olle.roman.game.romansgameclient.model.state.Severity;
 import olle.roman.game.romansgameclient.model.state.State;
+import olle.roman.game.romansgameserver.domain.game.DefaultGame;
 import olle.roman.game.romansgameserver.domain.model.Game;
 import olle.roman.game.romansgameserver.domain.model.map.Map;
 

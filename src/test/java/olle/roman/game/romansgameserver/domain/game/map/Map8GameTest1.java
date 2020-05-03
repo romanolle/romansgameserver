@@ -1,8 +1,7 @@
-package olle.roman.game.romansgameserver.domain.game;
+package olle.roman.game.romansgameserver.domain.game.map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -13,61 +12,55 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import olle.roman.game.romansgameclient.model.action.Action;
 import olle.roman.game.romansgameclient.model.objects.Nothing;
-import olle.roman.game.romansgameclient.model.objects.Portal;
-import olle.roman.game.romansgameclient.model.objects.Wall;
 import olle.roman.game.romansgameclient.model.objects.equipment.Axe;
 import olle.roman.game.romansgameclient.model.objects.equipment.Wood;
+import olle.roman.game.romansgameclient.model.objects.obstacle.Tree;
 import olle.roman.game.romansgameclient.model.objects.weapon.Sword;
-import olle.roman.game.romansgameclient.model.report.GameResult;
 import olle.roman.game.romansgameclient.model.state.NotificationCode;
 import olle.roman.game.romansgameclient.model.state.Severity;
 import olle.roman.game.romansgameclient.model.state.State;
+import olle.roman.game.romansgameserver.domain.game.DefaultGame;
 import olle.roman.game.romansgameserver.domain.model.Game;
-import olle.roman.game.romansgameserver.domain.model.Result;
 import olle.roman.game.romansgameserver.domain.model.map.Map;
 
 @SpringBootTest
-public class Map1GameTest2 {
+public class Map8GameTest1 {
 
-	private static final String NAME = "GameTestMap1";
-	private static final Map MAP = Maps.MAP_1_PRIMITIVE_2;
+	private static final String NAME = "GameTestMap8";
+	private static final Map MAP = Maps.MAP_8_TREE_1;
 
 	@Test
-	public void stepOnNothingMap1_2() {
+	public void stepOnNothingMap8_1() {
 		Game game = new DefaultGame(NAME, UUID.randomUUID(), MAP);
 		State initialState = game.getCurrentState();
-		assertTrue(game.lookAhead() instanceof Portal);
-		
-		State newState = game.action(Action.step());
 		assertTrue(game.lookAhead() instanceof Nothing);
 		
-		assertTrue(game.isFinished());
+		State newState = game.action(Action.step());
+		assertTrue(game.lookAhead() instanceof Tree);
+		
+		
+		assertFalse(game.isFinished());
+		assertNull(game.getResult());
 		assertEquals((initialState.getCurrentPosition() + 1), newState.getCurrentPosition());
 		assertEquals(initialState.getHealth(), newState.getHealth());
+		assertTrue(newState.getNotifications().isEmpty());
 		assertTrue(newState.getEquipments().isEmpty());
 		assertNull(newState.getStandsOn());
-		
-		GameResult result = game.getResult();
-		assertNotNull(result);
-		assertEquals(Result.SUCCESS.getResult(), result.getMessage());
-		assertTrue(result.getHistory().size() == 2);
-		assertTrue(newState.getNotifications().size() == 1);
-		assertTrue(newState.getNotifications().iterator().next().getSeverity() == Severity.INFO);
-		assertTrue(newState.getNotifications().iterator().next().getCode() == NotificationCode.GAME_SUCCESS);
 	}
 	
 	@Test
-	public void jumpOnNothingMap1_2() {
+	public void jumpOnNothingMap8_1() {
 		Game game = new DefaultGame(NAME, UUID.randomUUID(), MAP);
 		State initialState = game.getCurrentState();
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
-		State newState = game.action(Action.jump());
-		assertTrue(game.lookAhead() instanceof Wall);
+		State newState = game.action(Action.step());
+		assertTrue(game.lookAhead() instanceof Tree);
+		
 		
 		assertFalse(game.isFinished());
 		assertNull(game.getResult());
-		assertEquals((initialState.getCurrentPosition() + 2), newState.getCurrentPosition());
+		assertEquals((initialState.getCurrentPosition() + 1), newState.getCurrentPosition());
 		assertEquals(initialState.getHealth(), newState.getHealth());
 		assertTrue(newState.getNotifications().isEmpty());
 		assertTrue(newState.getEquipments().isEmpty());
@@ -75,13 +68,13 @@ public class Map1GameTest2 {
 	}
 	
 	@Test
-	public void takeNothingMap1_2() {
+	public void takeNothingMap8_1() {
 		Game game = new DefaultGame(NAME, UUID.randomUUID(), MAP);
 		State initialState = game.getCurrentState();
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		State newState = game.action(Action.take());
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		assertFalse(game.isFinished());
 		assertNull(game.getResult());
@@ -93,13 +86,13 @@ public class Map1GameTest2 {
 	}
 	
 	@Test
-	public void healOnNothingMap1_2() {
+	public void healOnNothingMap8_1() {
 		Game game = new DefaultGame(NAME, UUID.randomUUID(), MAP);
 		State initialState = game.getCurrentState();
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		State newState = game.action(Action.heal());
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		assertFalse(game.isFinished());
 		assertNull(game.getResult());
@@ -111,13 +104,13 @@ public class Map1GameTest2 {
 	}
 	
 	@Test
-	public void attackOnNothingMap1_2() {
+	public void attackOnNothingMap8_1() {
 		Game game = new DefaultGame(NAME, UUID.randomUUID(), MAP);
 		State initialState = game.getCurrentState();
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		State newState = game.action(Action.attack());
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		assertFalse(game.isFinished());
 		assertNull(game.getResult());
@@ -129,13 +122,13 @@ public class Map1GameTest2 {
 	}
 	
 	@Test
-	public void attackWithNullWeaponOnNothingMap1_2() {
+	public void attackWithNullWeaponOnNothingMap8_1() {
 		Game game = new DefaultGame(NAME, UUID.randomUUID(), MAP);
 		State initialState = game.getCurrentState();
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		State newState = game.action(Action.attack(null));
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		assertFalse(game.isFinished());
 		assertNull(game.getResult());
@@ -147,13 +140,13 @@ public class Map1GameTest2 {
 	}
 	
 	@Test
-	public void attackWithUnexistWeaponOnNothingMap1_2() {
+	public void attackWithUnexistWeaponOnNothingMap8_1() {
 		Game game = new DefaultGame(NAME, UUID.randomUUID(), MAP);
 		State initialState = game.getCurrentState();
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		State newState = game.action(Action.attack(Sword.getInstance()));
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		assertFalse(game.isFinished());
 		assertNull(game.getResult());
@@ -167,13 +160,13 @@ public class Map1GameTest2 {
 	}
 	
 	@Test
-	public void makeNothingMap1_2() {
+	public void makeNothingMap8_1() {
 		Game game = new DefaultGame(NAME, UUID.randomUUID(), MAP);
 		State initialState = game.getCurrentState();
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		State newState = game.action(Action.make(Wood.getInstance(), Sword.getInstance()));
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		assertFalse(game.isFinished());
 		assertNull(game.getResult());
@@ -187,14 +180,15 @@ public class Map1GameTest2 {
 	}
 	
 	@Test
-	public void makeNullOnNothingMap1_2() {
+	public void makeNullOnNothingMap8_1() {
 		Game game = new DefaultGame(NAME, UUID.randomUUID(), MAP);
 		State initialState = game.getCurrentState();
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		State newState = game.action(Action.make(null, null));
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
+		assertFalse(game.isFinished());
 		assertNull(game.getResult());
 		assertEquals(initialState.getCurrentPosition(), newState.getCurrentPosition());
 		assertEquals(initialState.getHealth(), newState.getHealth());
@@ -206,13 +200,13 @@ public class Map1GameTest2 {
 	}
 	
 	@Test
-	public void useNothingMap1_2() {
+	public void useNothingMap8_1() {
 		Game game = new DefaultGame(NAME, UUID.randomUUID(), MAP);
 		State initialState = game.getCurrentState();
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		State newState = game.action(Action.use(Axe.getInstance()));
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		assertFalse(game.isFinished());
 		assertNull(game.getResult());
@@ -226,13 +220,13 @@ public class Map1GameTest2 {
 	}
 	
 	@Test
-	public void useNullOnNothingMap1_2() {
+	public void useNullOnNothingMap8_1() {
 		Game game = new DefaultGame(NAME, UUID.randomUUID(), MAP);
 		State initialState = game.getCurrentState();
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		State newState = game.action(Action.use(null));
-		assertTrue(game.lookAhead() instanceof Portal);
+		assertTrue(game.lookAhead() instanceof Nothing);
 		
 		assertFalse(game.isFinished());
 		assertNull(game.getResult());

@@ -58,4 +58,9 @@ public class Bow extends ObjectBase implements Weapon {
 		return INITIAL_MATERIALS;
 	}
 
+	@Override
+	public boolean singletonInList() {
+		return true;
+	}
+
 }

@@ -42,5 +42,10 @@ public class Wood extends ObjectBase implements Equipment {
 	public Collection<Equipment> madeFrom() throws NotPossibleToMakeException {
 		throw new NotPossibleToMakeException();
 	}
+
+	@Override
+	public boolean singletonInList() {
+		return false;
+	}
 	
 }

@@ -8,6 +8,8 @@ public interface Equipment extends CommonObject {
 
 	Collection<Equipment> madeFrom() throws NotPossibleToMakeException;
 	
+	boolean singletonInList();
+	
 	olle.roman.game.romansgameclient.model.objects.Equipment toClientEquipment();
 	
 }

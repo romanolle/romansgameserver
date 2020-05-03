@@ -50,4 +50,9 @@ public class Axe extends ObjectBase implements Equipment {
 	public Collection<Equipment> madeFrom() {
 		return INITIAL_MATERIALS;
 	}
+
+	@Override
+	public boolean singletonInList() {
+		return true;
+	}
 }

@@ -46,4 +46,9 @@ public class Sword extends ObjectBase implements Weapon {
 		throw new NotPossibleToMakeException();
 	}
 
+	@Override
+	public boolean singletonInList() {
+		return true;
+	}
+
 }

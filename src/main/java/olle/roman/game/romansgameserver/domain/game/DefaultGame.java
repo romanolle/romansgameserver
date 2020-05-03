@@ -23,6 +23,7 @@ import olle.roman.game.romansgameclient.model.state.NotificationCode;
 import olle.roman.game.romansgameclient.model.state.Severity;
 import olle.roman.game.romansgameclient.model.state.State;
 import olle.roman.game.romansgameserver.domain.model.Direction;
+import olle.roman.game.romansgameserver.domain.model.Equipments;
 import olle.roman.game.romansgameserver.domain.model.Game;
 import olle.roman.game.romansgameserver.domain.model.History;
 import olle.roman.game.romansgameserver.domain.model.HistoryState;
@@ -62,10 +63,10 @@ public class DefaultGame implements Game, Serializable, ObjectActions {
 	
 	private int currentPosition;
 	private int health;
-	private int maxHealth;
+	private final int maxHealth;
 	private Direction direction = Direction.FORWARD;
 
-	private List<Equipment> equipments;
+	private Equipments equipments;
 
 	private Result result = null;
 
@@ -83,7 +84,7 @@ public class DefaultGame implements Game, Serializable, ObjectActions {
 		this.direction = map.getDirection();
 		this.health = map.getMaxHealth();
 		this.maxHealth = map.getMaxHealth();
-		this.equipments = Lists.newArrayList(map.getDefaultEquipments());
+		this.equipments = new Equipments(Lists.newArrayList(map.getDefaultEquipments()));
 		
 		try {
 			this.map.get(currentPosition).staysOn();
@@ -123,7 +124,7 @@ public class DefaultGame implements Game, Serializable, ObjectActions {
 				maxHealth,
 				map.get(currentPosition) instanceof Equipment ? ((Equipment)map.get(currentPosition)).toClientEquipment() : null,
 				Collections2.transform(
-						equipments, 
+						equipments.getAllEquipments(), 
 						new Function<Equipment, olle.roman.game.romansgameclient.model.objects.Equipment>() {
 
 							@Override
@@ -181,20 +182,6 @@ public class DefaultGame implements Game, Serializable, ObjectActions {
 				((Enemy)map.get(index)).doAction(Math.abs(index - currentPosition));
 			}
 		}
-		
-		
-		
-		//vyzkouset notifikace a akce
-		
-		//TODO upravit kod (metody action) na mensi kod pro jednodussi testovani (zjistit jak na promenne - parametry || class properties
-		//TODO pridat casovac, hra by nemela trvat dele jak X ms - duvod: slo by debugovat
-		
-		//TODO add new thing objects
-//		pridat veci - dalekohled
-					
-//		mapa zapalky,sekyra,strom,dalekohled,dira,lucisnik - reseni-pred dirou dalekohled, vytvorit luk, zastrelit, preskocit || postavit most,bojovat
-		
-		//TODO udelat testy
 		
 		
 		
@@ -327,27 +314,19 @@ public class DefaultGame implements Game, Serializable, ObjectActions {
 				return;
 			}
 			
-			List<Equipment> originEquipmentsState = Lists.newArrayList(equipments);
 			Collection<Equipment> initialMaterials;
 			try {
 				initialMaterials = newEquipment.madeFrom();
-				for(Equipment initialMaterial : initialMaterials) {
+				for(Equipment initialMaterial : initialMaterials) { 
 					if(!equipments.contains(initialMaterial)) {
-						LOGGER.error("Could not find initial material {} in inventory", initialMaterial);
-						notifications.add(new Notification(
-									NotificationCode.INVENTORY_NOT_CONTAIN_INITIAL_MATERIAL, 
-									"Could not find initial material " + initialMaterial + " in inventory"
-								)
-						);
-					} else {
-						equipments.remove(initialMaterial);
+						notifications.add(new Notification(NotificationCode.INVENTORY_NOT_CONTAIN_INITIAL_MATERIAL));
+						return;
 					}
 				}
 				
-				if(!containsError(notifications)) {
-					equipments.add(newEquipment);
-				} else {
-					equipments = originEquipmentsState;
+				equipments.add(newEquipment);
+				for(Equipment initialMaterial : initialMaterials) { 
+					equipments.delete(initialMaterial);
 				}
 
 			} catch (NotPossibleToMakeException e) {
@@ -442,7 +421,7 @@ public class DefaultGame implements Game, Serializable, ObjectActions {
 				health, 
 				maxHealth,
 				map.get(currentPosition) instanceof Equipment ? ((Equipment)map.get(currentPosition)) : null,
-				Lists.newArrayList(equipments),
+				Lists.newArrayList(equipments.getAllEquipments()),
 				action
 		);
 	}
